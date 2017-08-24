@@ -3,16 +3,16 @@
 # These don't have to be explicitly imported by vars_files: they are autopopulated.
 
 mariadb_bind_address: '0.0.0.0'
-mariadb_root_password: 'Temple_46'
+mariadb_root_password: 'toor'
 mariadb_databases:
   - name: kolab
   - name: roundcube
 mariadb_users:
   - name: kolab
-    password: '3nt3rTh3F0r3st'
+    password: 'password'
     priv: "kolab.*:ALL,GRANT"
     host: "%"
   - name: roundcube
-    password: '3nt3rTh3F0r3st'
+    password: 'password'
     priv: "roundcube.*:ALL,GRANT"
     host: "%"
