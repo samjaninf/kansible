@@ -1,0 +1,40 @@
+---
+  # This role will install kolab 389ds server.
+
+- name: Ensure directory is present
+  file: path=/etc/sysctl.d/ state=directory
+
+
+- name: Copy 389-ds kernel params files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: '389-ds.limits', dest: '/etc/security/limits.d/50-389ds.conf' }
+    - { src: '389-ds.sysctl', dest: '/etc/sysctl.d/389-ds' }
+    - { src: '389-ds.sysconfig', dest: '/etc/sysconfig/dirsrv' }
+    - { src: '389-ds.DB_CONFIG', dest: '/etc/dirsrv/DB_CONFIG' }
+  notify: Apply kernel params
+
+- name: Install kolab 389ds server
+  yum:
+    name: kolab-ldap
+    state: present
+
+- name: Fill the ldap temp file
+  template: src=ldap.j2 dest=/tmp/ldap
+  tags: ldap
+  # mode: 777
+  # notify: run dirsrv setup
+
+- name: Check if 389 service already installed
+  stat:
+    path: /etc/dirsrv/slapd-{{ ansible_hostname }}/schema/99kolab3.ldif
+  register: slapd_is_here
+  notify: install_dirsrv
+
+- name: Open proper ports in firewalld
+  firewalld: zone=public service=ldap permanent=true state=enabled

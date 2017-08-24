@@ -1,0 +1,24 @@
+[General]
+FullMachineName = {{ fqdn | default(ansible_fqdn) }}
+SuiteSpotUserID = {{ dirsrv_user | default('dirsrv') }}
+SuiteSpotGroup = {{ dirsrv_group | default('dirsrv') }}
+AdminDomain = {{ admin_domain | default(ansible_domain) }}
+ConfigDirectoryLdapURL = ldap://{{ ldap_domain | default(ansible_fqdn) }}:389/o=NetscapeRoot
+ConfigDirectoryAdminID = {{ directory_admin_username | default('admin')}}
+ConfigDirectoryAdminPwd = {{ admin_password }}
+
+[slapd]
+SlapdConfigForMC = Yes
+UseExistingMC = 0
+ServerPort = 389
+ServerIdentifier = {{ hostname | default(ansible_hostname) }}
+Suffix = {{ root_domain | default(ansible_domain) | regex_replace('^(.*)\.(.*)', 'dc=\\1,dc=\\2') }}
+RootDN = cn=Directory Manager
+RootDNPwd = {{ directory_manager_password }}
+ds_bename = {{ no_dot_domain | default(ansible_hostname) }}
+AddSampleEntries = No
+
+[admin]
+Port = 9830
+ServerAdminID = admin
+ServerAdminPwd = {{ admin_password }}

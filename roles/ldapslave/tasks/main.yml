@@ -1,0 +1,7 @@
+---
+  # This role will install kolab 389ds server.
+
+- name: Install kolab 389ds server
+  yum:
+    name: kolab-ldap
+    state: present

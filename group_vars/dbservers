@@ -1,0 +1,18 @@
+---
+# The variables file used by the playbooks in the dbservers group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+mariadb_bind_address: '0.0.0.0'
+mariadb_root_password: 'Temple_46'
+mariadb_databases:
+  - name: kolab
+  - name: roundcube
+mariadb_users:
+  - name: kolab
+    password: '3nt3rTh3F0r3st'
+    priv: "kolab.*:ALL,GRANT"
+    host: "%"
+  - name: roundcube
+    password: '3nt3rTh3F0r3st'
+    priv: "roundcube.*:ALL,GRANT"
+    host: "%"

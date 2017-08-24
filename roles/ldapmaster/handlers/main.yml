@@ -1,0 +1,23 @@
+---
+  # Handlers for ldaps
+
+- name: Restart 389 Directory Server
+  command: systemctl restart dirsrv.target
+  listen: "restart_dirsrv"
+
+- name: Enable 389 directory server
+  command: systemctl enable dirsrv.target
+  listen: "restart_dirsrv"
+
+- name: Setup dirsrv
+  command: /usr/sbin/setup-ds.pl --debug --silent --force --file=/tmp/ldap
+  listen: "install_dirsrv"
+  when: slapd_is_here.stat.exists == False
+
+- name: Add the kolab schema to 389 dirsrv
+  command: cp -rf /usr/share/doc/kolab-schema-3.3/kolab3.ldif /etc/dirsrv/slapd-{{ inventory_hostname_short }}/schema/99kolab3.ldif
+  listen: "install_dirsrv"
+  when: slapd_is_here.stat.exists == False
+
+- name: Apply kernel params
+  command: sysctl -p /etc/sysctl.d/389-ds

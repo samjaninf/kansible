@@ -1,0 +1,78 @@
+---
+## This playbook deploys the whole application stack in this site.
+
+# Apply common configuration to all hosts
+- hosts: all
+  become: true
+  # remote_user: slashmin
+  roles:
+  - common
+  - geerlingguy.ntp
+
+# Configure and deploy database servers.
+- hosts: dbservers
+
+  roles:
+  - bertvv.mariadb
+
+  tags:
+  - db
+
+# Configure the ldap servers.
+- hosts: ldapservers
+
+  roles:
+  - ldapmaster
+  - ldapslave
+
+# Install the imap services
+# - hosts: imapservers
+
+  # roles:
+  # - imapback
+  # - imapfront
+  # - mup
+
+# Configure the front end imap services
+# - hosts: mtaservers
+
+  # roles:
+  # - mta
+
+# Configure the mupdate servers
+# - hosts: mupservers
+#
+#   roles:
+#   - mup
+
+# Configure the imap front end
+# - hosts: imapfront_servers
+#
+#   roles:
+#   - imapfront
+
+# Configure the imap back end
+# - hosts: imapback_servers
+#
+#   roles:
+#   - imapback
+
+# Configure ldap master
+# - hosts: ldapmservers
+#
+#   roles:
+#   - ldap_master
+
+# Configure ldap slaves
+# - hosts: ldapsservers
+#
+#   roles:
+#   - ldap_slave
+
+# - hosts: webservers
+#
+#   roles:
+#   - web
+#
+#   tags:
+#   - web

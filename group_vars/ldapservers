@@ -1,0 +1,11 @@
+# fqdn:
+dirsrv_user: dirsrv
+dirsrv_group: dirsrv
+admin_domain: stack.dev
+# ldap_domain:
+directory_admin_username: admin
+admin_password: Temple_46
+# hostname:
+root_domain: dc=stack,dc=dev
+directory_manager_password: Temple_46
+no_dot_domain: stack_dev

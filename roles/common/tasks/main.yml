@@ -1,0 +1,36 @@
+---
+ # This role contains common plays that will run on all nodes.
+
+- name: Install python bindings for SE Linux
+  yum: name={{ item }} state=present
+  with_items:
+   - libselinux-python
+   - libsemanage-python
+   - epel-release
+   - screen
+   - vim
+   - wget
+
+- name: Update machine to latest
+  yum: name=* state=latest
+
+- name: test to see if selinux is running
+  command: getenforce
+  register: sestatus
+  changed_when: false
+
+- name: Add Kolab repo to all servers
+  yum_repository:
+    name: kolab_16
+    description: Kolabb 16 install repo
+    baseurl: http://obs.kolabsys.com/repositories/Kolab:/16/CentOS_7/
+    gpgkey: https://ssl.kolabsys.com/community.asc
+    gpgcheck: yes
+
+#- name: Disable SELINUX on all machines
+- selinux:
+    state: disabled
+
+- name: Disabling SELinux now
+  shell: setenforce 0
+  ignore_errors: yes
