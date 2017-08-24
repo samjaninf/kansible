@@ -4,8 +4,8 @@ dirsrv_group: dirsrv
 admin_domain: stack.dev
 # ldap_domain:
 directory_admin_username: admin
-admin_password: Temple_46
+admin_password: password
 # hostname:
 root_domain: dc=stack,dc=dev
-directory_manager_password: Temple_46
+directory_manager_password: password
 no_dot_domain: stack_dev
